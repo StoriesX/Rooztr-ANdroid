@@ -1,20 +1,15 @@
 package com.rooztr.rooztr_android;
 import android.app.Activity;
 import android.content.ContentResolver;
-import android.content.Context;
 import android.database.Cursor;
 import android.provider.ContactsContract;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
 
-import com.rooztr.R;
 import com.rooztr.model.Contact;
 
 public class MainActivity extends Activity {
@@ -22,8 +17,6 @@ public class MainActivity extends Activity {
 
     Cursor cur;
     ArrayList<String> names = new ArrayList<>();
-    //HashMap<String,String> namesMap = new HashMap<>();
-    //HashMap<String,Set<String>> phoneNumbersMap = new HashMap<>();
     public static HashMap<String,Contact> contactMap = new HashMap<>();
 
     @Override

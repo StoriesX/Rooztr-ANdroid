@@ -12,21 +12,15 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.rooztr.R;
 import com.rooztr.model.Contact;
 
 /**
  * Created by anandsuresh on 7/20/16.
  */
 public class ContactDetails extends Fragment{
-
-
     private TextView textName;
     private TextView textNumbers;
     String info;
-
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
