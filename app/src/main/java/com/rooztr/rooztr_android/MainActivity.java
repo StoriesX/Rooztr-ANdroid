@@ -1,6 +1,4 @@
 package com.rooztr.rooztr_android;
-
-<<<<<<< HEAD
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;

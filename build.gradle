@@ -17,10 +17,7 @@ allprojects {
         jcenter()
     }
 }
-<<<<<<< HEAD
-=======
 
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
->>>>>>> 2fec3fa6ecf2f7edc8b2125801c0c28dac2a6283
