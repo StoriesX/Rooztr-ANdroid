@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/detail"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1">
+
+    <TextView
+        android:gravity="center"
+        android:text="hello"
+        android:id="@+id/detailText"
+        android:layout_width="361dp"
+        android:layout_height="52dp" />
+
+    <TextView
+        android:gravity="center"
+        android:text="hello again"
+        android:id="@+id/detailNumbers"
+        android:layout_width="361dp"
+        android:layout_height="52dp" />
+
+
+
+</LinearLayout>
