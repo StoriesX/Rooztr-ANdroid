@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/contactFragment"
-        android:name="extinguishers.com.rooztr.ContactFragment"
+        android:name="com.rooztr.rooztr_android.ContactFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
