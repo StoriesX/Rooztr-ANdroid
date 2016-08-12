@@ -11,9 +11,19 @@ public class Contact {
     private String id;
     private String name;
     private Set<String> numbers;
+    private Set<String> email;
 
     public Contact(){
         numbers = new HashSet<>();
+        email = new HashSet<>();
+    }
+
+    public Set<String> getEmail() {
+        return email;
+    }
+
+    public void setEmail(Set<String> email) {
+        this.email = email;
     }
 
     public String getId() {

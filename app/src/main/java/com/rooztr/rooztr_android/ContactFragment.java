@@ -3,7 +3,7 @@ package com.rooztr.rooztr_android;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
-import android.app.ListFragment;
+import android.support.v4.app.ListFragment;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -22,7 +22,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import com.rooztr.R;
 import com.rooztr.model.Contact;
 
 /**
@@ -42,7 +41,7 @@ public class ContactFragment extends ListFragment implements AdapterView.OnItemC
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
         Toast.makeText(getActivity(), "Item: " + position, Toast.LENGTH_SHORT).show();
-        Contact o = (Contact) contacts.get(position);
+        Contact o = contacts.get(position);
         //Contact o = (Contact) parent.getAdapter().getItem(position);
         //String str = (String) o;
         String contactId = o.getId();
@@ -53,7 +52,6 @@ public class ContactFragment extends ListFragment implements AdapterView.OnItemC
     }
 
 
-    @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 

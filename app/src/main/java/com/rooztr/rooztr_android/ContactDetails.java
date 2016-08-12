@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.rooztr.R;
 import com.rooztr.model.Contact;
 
 /**
@@ -23,6 +22,7 @@ public class ContactDetails extends Fragment{
 
     private TextView textName;
     private TextView textNumbers;
+    private TextView textEmail;
     String info;
 
 
@@ -36,6 +36,7 @@ public class ContactDetails extends Fragment{
 
         textName = (TextView) view.findViewById(R.id.detailText);
         textNumbers = (TextView) view.findViewById(R.id.detailNumbers);
+        textEmail = (TextView) view.findViewById(R.id.detailEmail);
 
         info = getArguments().getString("id");
         Contact contact = MainActivity.contactMap.get(info);
@@ -48,6 +49,13 @@ public class ContactDetails extends Fragment{
             textNumbers.append("\n");
 
         }
+
+        for(String val : contact.getEmail()) {
+            textEmail.append(val);
+            textEmail.append("\n");
+
+        }
+
 
         return view;
     }
