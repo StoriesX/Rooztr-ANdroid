@@ -82,7 +82,7 @@ public class CallRequest{
     }
 
     public long getSentAt() {
-        long sentAt;
+        return sentAt;
     }
 
     public void setSentAt(long sentAt) { this.sentAt = sentAt; }

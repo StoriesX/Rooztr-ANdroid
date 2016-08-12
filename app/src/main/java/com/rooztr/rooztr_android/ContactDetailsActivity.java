@@ -5,14 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
-<<<<<<< HEAD
 
-
-=======
->>>>>>> c4e557e7da0aaa31413cbc90ce761348fa1a0e3a
-/**
- * Created by anandsuresh on 7/21/16.
- */
 public class ContactDetailsActivity extends Activity {
 
     public ContactDetailsActivity() {

@@ -1,15 +1,11 @@
 package com.rooztr.rooztr_android;
 
-<<<<<<< HEAD
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
 import android.content.ContentResolver;
 import android.content.Context;
-=======
-import android.app.ListFragment;
->>>>>>> c4e557e7da0aaa31413cbc90ce761348fa1a0e3a
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -23,11 +19,6 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import com.rooztr.model.Contact;
-
-/**
- * Created by anandsuresh on 7/18/16.
- */
-
 
 public class ContactFragment extends ListFragment implements AdapterView.OnItemClickListener {
 
@@ -51,10 +42,6 @@ public class ContactFragment extends ListFragment implements AdapterView.OnItemC
 
     }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> c4e557e7da0aaa31413cbc90ce761348fa1a0e3a
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.contact_item,container,false);
