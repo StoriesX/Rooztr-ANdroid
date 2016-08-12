@@ -6,15 +6,15 @@ public class CallRequest{
     private String _id;
     private String requester;
     private String requestee;
-    private Date start;
-    private Date end;
+    private long start;
+    private long end;
     private int status;
     private String message;
-    private Date sentAt;
+    private long sentAt;
 
     public CallRequest(){}
 
-    public CallRequest(String _id, String requester, String requestee, Date start, Date end, int status, String message, Date sentAt){
+    public CallRequest(String _id, String requester, String requestee, long start, long end, int status, String message, long sentAt){
         this._id = _id;
         this.requester = requester;
         this.requestee = requestee;
@@ -41,19 +41,19 @@ public class CallRequest{
         this.requestee = requestee;
     }
 
-    public Date getStart() {
+    public long getStart() {
         return start;
     }
 
-    public void setStart(Date start) {
+    public void setStart(long start) {
         this.start = start;
     }
 
-    public Date getEnd() {
+    public long getEnd() {
         return end;
     }
 
-    public void setEnd(Date end) {
+    public void setEnd(long end) {
         this.end = end;
     }
 
@@ -81,12 +81,9 @@ public class CallRequest{
         this._id = _id;
     }
 
-    public Date getSentAt() {
-        return sentAt;
+    public long getSentAt() {
+        long sentAt;
     }
 
-    public void setSentAt(Date sentAt) {
-        this.sentAt = sentAt;
-    }
-
+    public void setSentAt(long sentAt) { this.sentAt = sentAt; }
 }

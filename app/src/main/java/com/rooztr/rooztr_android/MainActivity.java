@@ -1,15 +1,16 @@
 package com.rooztr.rooztr_android;
 import android.app.Activity;
 import android.content.ContentResolver;
-import android.content.Context;
 import android.database.Cursor;
 import android.provider.ContactsContract;
+
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -18,8 +19,6 @@ import android.view.Window;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
 
 import com.rooztr.model.Contact;
 import com.rooztr.rooztr_android.rooztr.adapter.TabsPagerAdapter;
@@ -29,6 +28,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
 
     Cursor cur;
     ArrayList<String> names = new ArrayList<>();
+
     private ViewPager viewPager;
     private TabsPagerAdapter mAdapter;
     private ActionBar actionBar;
@@ -36,6 +36,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     private String[] tabs = { "Contacts", "Request", "Waiting" };
     //HashMap<String,String> namesMap = new HashMap<>();
     //HashMap<String,Set<String>> phoneNumbersMap = new HashMap<>();
+
     public static HashMap<String,Contact> contactMap = new HashMap<>();
 
     @Override

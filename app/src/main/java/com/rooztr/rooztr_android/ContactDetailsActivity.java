@@ -1,14 +1,15 @@
 package com.rooztr.rooztr_android;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> c4e557e7da0aaa31413cbc90ce761348fa1a0e3a
 /**
  * Created by anandsuresh on 7/21/16.
  */
@@ -22,14 +23,11 @@ public class ContactDetailsActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.contact_details);
-
-
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-
 
         Intent intent = getIntent();
         String id = intent.getStringExtra("data");
