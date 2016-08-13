@@ -8,6 +8,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,10 @@ public class ContactFragment extends ListFragment implements AdapterView.OnItemC
     //HashMap<String,Contact> contactHashMap = new HashMap<>();
     Intent intent;
 
+    public ContactFragment() {
+
+    }
+
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
@@ -44,8 +49,9 @@ public class ContactFragment extends ListFragment implements AdapterView.OnItemC
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Log.d("selected", "contact");
         View view = inflater.inflate(R.layout.contact_item,container,false);
-        MainActivity mainActivity = (MainActivity) getActivity();
+        //MainActivity mainActivity = (MainActivity) getActivity();
         //contactHashMap = mainActivity.contactMap;
         //names = mainActivity.namesMap;
         //phoneNumbers = mainActivity.phoneNumbersMap;

@@ -9,9 +9,10 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
+//import android.support.v7.app.ActionBarActivity;
 
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,8 +24,7 @@ import java.util.HashMap;
 import com.rooztr.model.Contact;
 import com.rooztr.rooztr_android.rooztr.adapter.TabsPagerAdapter;
 
-public class MainActivity extends ActionBarActivity implements ActionBar.TabListener {
-
+public class MainActivity extends AppCompatActivity implements ActionBar.TabListener {
 
     Cursor cur;
     ArrayList<String> names = new ArrayList<>();
@@ -42,27 +42,34 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        try {
+            getContacts();
+        }catch(Exception e){
+            Log.d("Exception", "error");
+        }
         //getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
         setContentView(R.layout.activity_main);
-
+        actionBar = getSupportActionBar();
         viewPager= (ViewPager) findViewById(R.id.pager);
 
-        actionBar = getSupportActionBar();
         mAdapter = new TabsPagerAdapter(getSupportFragmentManager());
 
         viewPager.setAdapter(mAdapter);
 
-
         actionBar.setHomeButtonEnabled(false);
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
-        for(String tab_name : tabs) {
+        for (String tab_name : tabs) {
             actionBar.addTab(actionBar.newTab().setText(tab_name).setTabListener(this));
         }
+
+        /*
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
             @Override
             public void onPageSelected(int position) {
+                Log.d("selected", String.valueOf(position));
                 actionBar.setSelectedNavigationItem(position);
             }
 
@@ -73,8 +80,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
             @Override
             public void onPageScrollStateChanged(int arg0) {
             }
-        });
-        getContacts();
+        });*/
     }
 
 
@@ -143,6 +149,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
 
     @Override
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
+        Log.d("Selected", String.valueOf(tab.getPosition()));
         viewPager.setCurrentItem(tab.getPosition());
     }
 
