@@ -25,8 +25,6 @@ import com.rooztr.model.Contact;
 import com.rooztr.rooztr_android.rooztr.adapter.TabsPagerAdapter;
 
 public class MainActivity extends AppCompatActivity implements ActionBar.TabListener {
-
-    Cursor cur;
     ArrayList<String> names = new ArrayList<>();
 
     private ViewPager viewPager;
@@ -37,17 +35,12 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
     //HashMap<String,String> namesMap = new HashMap<>();
     //HashMap<String,Set<String>> phoneNumbersMap = new HashMap<>();
 
-    public static HashMap<String,Contact> contactMap = new HashMap<>();
+    public static HashMap<String,Contact> contactMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        try {
-            getContacts();
-        }catch(Exception e){
-            Log.d("Exception", "error");
-        }
+        getContacts();
         //getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
         setContentView(R.layout.activity_main);
         actionBar = getSupportActionBar();
@@ -107,9 +100,9 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
     }
 
     public void getContacts() {
-
+        contactMap = new HashMap<>();
         ContentResolver cr = getContentResolver();
-        cur = cr.query(ContactsContract.Contacts.CONTENT_URI,null,null,null,null);
+        Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI,null,null,null,null);
         if(cur.getCount() > 0) {
             while(cur.moveToNext()) {
                 String name  = cur.getString(cur.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
