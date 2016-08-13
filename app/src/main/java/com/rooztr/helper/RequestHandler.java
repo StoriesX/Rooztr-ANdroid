@@ -69,6 +69,23 @@ public class RequestHandler{
         return token;
     }
 
+    //validate
+    public static boolean validate(String phone, String token){
+        try{
+            URL url = new URL(baseUrl + "login");
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("phone", phone);
+            connection.setRequestProperty("token", token);
+            int status = connection.getResponseCode();
+            Log.d("response code", String.valueOf(status));
+            if(status < 300) return true;
+        }catch(Exception e){
+            Log.d("exception", e.getMessage());
+        }
+        return false;
+    }
+
     //request
     public static CallRequest request(String phone, String token, String toPhone, String start, String end, String message){
         CallRequest cr = null;
