@@ -1,6 +1,7 @@
 package com.rooztr.rooztr_android;
 import android.app.Activity;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.database.Cursor;
 import android.provider.ContactsContract;
 
@@ -155,4 +156,5 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
     public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
 
     }
+
 }

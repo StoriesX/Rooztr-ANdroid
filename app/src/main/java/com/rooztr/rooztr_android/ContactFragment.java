@@ -17,13 +17,14 @@ import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import com.rooztr.model.Contact;
 
 public class ContactFragment extends ListFragment implements AdapterView.OnItemClickListener {
 
-    public ArrayList<Contact> contacts = new ArrayList<>();
+    public List<Contact> contacts = new ArrayList<>();
     //HashMap<String,String> names = new HashMap<>();
     //HashMap<String,Set<String>> phoneNumbers = new HashMap<>();
     //HashMap<String,Contact> contactHashMap = new HashMap<>();
@@ -51,6 +52,7 @@ public class ContactFragment extends ListFragment implements AdapterView.OnItemC
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d("selected", "contact");
         View view = inflater.inflate(R.layout.contact_item,container,false);
+        Log.d("view", "created");
         //MainActivity mainActivity = (MainActivity) getActivity();
         //contactHashMap = mainActivity.contactMap;
         //names = mainActivity.namesMap;
@@ -60,8 +62,9 @@ public class ContactFragment extends ListFragment implements AdapterView.OnItemC
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-
         super.onActivityCreated(savedInstanceState);
+        Log.d("activity", "created");
+        contacts = new ArrayList<>();
         for(Map.Entry<String,Contact> entry : MainActivity.contactMap.entrySet()) {
             contacts.add(entry.getValue());
         }

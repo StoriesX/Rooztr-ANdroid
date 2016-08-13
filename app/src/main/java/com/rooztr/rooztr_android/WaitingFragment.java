@@ -2,6 +2,7 @@ package com.rooztr.rooztr_android;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +17,7 @@ public class WaitingFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_waiting, container, false);
-
+        Log.d("waiting activity", "created");
         return rootView;
     }
 
