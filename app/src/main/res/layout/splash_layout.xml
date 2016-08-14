@@ -41,6 +41,14 @@
         android:hint="Enter Code"
         android:layout_centerHorizontal="true"
         />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/login"
+        android:text="LOGIN"
+        android:layout_below="@+id/p3"
+        android:layout_centerHorizontal="true"
+        />
 
     </RelativeLayout>
 
