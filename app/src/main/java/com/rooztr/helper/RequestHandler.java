@@ -115,7 +115,7 @@ public class RequestHandler{
     }
 
     //request
-    private static CallRequest request(String phone, String token, String toPhone, long start, long end, String message) throws Exception{
+    private static void request(String phone, String token, String toPhone, long start, long end, String message) throws Exception{
         try{
             if(phone == null || token == null) throw new NullPointerException();
             URL url = new URL(baseUrl + "request");
@@ -140,8 +140,8 @@ public class RequestHandler{
             int stats = connection.getResponseCode();
             Log.d("response code", String.valueOf(stats));
             InputStream response = connection.getInputStream();
-            if(stats == 200) {
-                return new Gson().fromJson(readStream(response), CallRequest.class);
+            if(stats == 201) {
+                return;
             }else if(stats == 204) {
                 throw new UserNotExistException();
             }else if(stats == 401){
