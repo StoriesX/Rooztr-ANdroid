@@ -12,7 +12,7 @@ public class CallRequest{
     private String message;
     private long sentAt;
 
-    public CallRequest(){}
+    public CallRequest(){};
 
     public CallRequest(String _id, String requester, String requestee, long start, long end, int status, String message, long sentAt){
         this._id = _id;

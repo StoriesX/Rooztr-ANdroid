@@ -21,6 +21,7 @@ import android.view.Window;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import com.rooztr.model.Contact;
 import com.rooztr.rooztr_android.rooztr.adapter.TabsPagerAdapter;
@@ -37,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
     //HashMap<String,Set<String>> phoneNumbersMap = new HashMap<>();
 
     public static HashMap<String,Contact> contactMap;
+    public static List<Contact> contacts = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +104,7 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
 
     public void getContacts() {
         contactMap = new HashMap<>();
+        contacts = new ArrayList<>();
         ContentResolver cr = getContentResolver();
         Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI,null,null,null,null);
         if(cur.getCount() > 0) {
@@ -134,6 +137,7 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
                         }
                         pcur.close();
                     }
+                    contacts.add(contact);
                     contactMap.put(id, contact);
                 }
             }

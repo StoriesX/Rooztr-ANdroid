@@ -3,6 +3,9 @@ package com.rooztr.helper;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.rooztr.exceptions.InvalidInputException;
+import com.rooztr.exceptions.UnauthenticatedException;
+import com.rooztr.exceptions.UserNotExistException;
 import com.rooztr.model.CallRequest;
 
 import java.io.BufferedReader;
@@ -22,7 +25,7 @@ public class RequestHandler{
     private final static String charset = "UTF-8";
 
     //register
-    public static int register(String phone){
+    public static void register(String phone) throws Exception{
         try {
             URL url = new URL(baseUrl + "initiate");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -36,17 +39,24 @@ public class RequestHandler{
             }catch(Exception e){
                 throw e;
             }
-            Log.d("response code", String.valueOf(connection.getResponseCode()));
-            return 0;
-        }catch(Exception e) {
-            Log.d("exception", e.getMessage());
-            return 1;
+            int stats = connection.getResponseCode();
+            Log.d("response code", String.valueOf(stats));
+            if(stats == 201) {
+            }else if(stats >=500 ){
+                throw new Exception();
+            }else{
+                throw new InvalidInputException();
+            }
+        }catch(NullPointerException e) {
+            //phone is null
+            throw new InvalidInputException();
+        }catch(Exception e){
+            throw e;
         }
     }
 
     //login
-    public static String login(String phone, String code){
-        String token = null;
+    public static String login(String phone, String code) throws Exception{
         try{
             URL url = new URL(baseUrl + "login");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -61,18 +71,53 @@ public class RequestHandler{
             }catch(Exception e){
                 throw e;
             }
-            Log.d("response code", String.valueOf(connection.getResponseCode()));
-            token = connection.getHeaderField("token");
+            int stats = connection.getResponseCode();
+            Log.d("response code", String.valueOf(stats));
+            if(stats == 200) {
+                return connection.getHeaderField("token");
+            }else if(stats >=500 ){
+                throw new Exception();
+            }else{
+                throw new InvalidInputException();
+            }
+        }catch(NullPointerException e) {
+            //phone or code is null
+            throw new InvalidInputException();
         }catch(Exception e){
-            Log.d("exception", e.getMessage());
+            throw e;
         }
-        return token;
+    }
+
+    //validate
+    public static boolean validate(String phone, String token) throws Exception{
+        try{
+            if(phone == null || token == null) throw new NullPointerException();
+            URL url = new URL(baseUrl + "login");
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("phone", phone);
+            connection.setRequestProperty("token", token);
+            int stats = connection.getResponseCode();
+            Log.d("response code", String.valueOf(stats));
+            if(stats == 200){
+                return true;
+            }else if(stats >=500 ){
+                throw new Exception();
+            }else{
+                return false;
+            }
+        }catch(NullPointerException e) {
+            //phone or code is null
+            throw new InvalidInputException();
+        }catch(Exception e){
+            throw e;
+        }
     }
 
     //request
-    public static CallRequest request(String phone, String token, String toPhone, String start, String end, String message){
-        CallRequest cr = null;
+    private static CallRequest request(String phone, String token, String toPhone, long start, long end, String message) throws Exception{
         try{
+            if(phone == null || token == null) throw new NullPointerException();
             URL url = new URL(baseUrl + "request");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setDoOutput(true); // trigger POST.
@@ -83,8 +128,8 @@ public class RequestHandler{
             connection.setRequestProperty("token", token);
             String query = String.format("toPhone=%s&start=%s&end=%s&message=%s",
                     URLEncoder.encode(toPhone, charset),
-                    URLEncoder.encode(start, charset),
-                    URLEncoder.encode(end, charset),
+                    URLEncoder.encode(String.valueOf(start), charset),
+                    URLEncoder.encode(String.valueOf(end), charset),
                     URLEncoder.encode(message, charset));
             try {
                 OutputStream output = connection.getOutputStream();
@@ -92,56 +137,96 @@ public class RequestHandler{
             }catch(Exception e){
                 throw e;
             }
-            Log.d("response code", String.valueOf(connection.getResponseCode()));
+            int stats = connection.getResponseCode();
+            Log.d("response code", String.valueOf(stats));
             InputStream response = connection.getInputStream();
-            cr = new Gson().fromJson(readStream(response), CallRequest.class);
+            if(stats == 200) {
+                return new Gson().fromJson(readStream(response), CallRequest.class);
+            }else if(stats == 204) {
+                throw new UserNotExistException();
+            }else if(stats == 401){
+                throw new UnauthenticatedException();
+            }else if(stats >=500 ){
+                throw new Exception();
+            }else{
+                throw new InvalidInputException();
+            }
+        }catch(NullPointerException e) {
+            //toPhone, message is null
+            throw new InvalidInputException();
         }catch(Exception e){
-            e.printStackTrace();
+            throw e;
         }
-        return cr;
     }
 
     //requestlist
-    public static List<CallRequest> requestlist(String phone, String token, String start, String end){
-        List<CallRequest> crlist = new ArrayList<CallRequest>();
+    public static List<CallRequest> requestlist(String phone, String token, String start, String end) throws Exception{
         try{
+            if(phone == null || token == null) throw new NullPointerException();
+            if(start == null) start = "";
+            if(end == null) end = "";
             URL url = new URL(baseUrl + "requestlist?from="+start+"&end="+end);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestProperty("Accept-Charset", charset);
             connection.setRequestProperty("Accept", "application/json");
             connection.setRequestProperty("phone", phone);
             connection.setRequestProperty("token", token);
-            Log.d("response code", String.valueOf(connection.getResponseCode()));
-            InputStream response = connection.getInputStream();
-            crlist = Arrays.asList(new Gson().fromJson(readStream(response), CallRequest[].class));
+            int stats = connection.getResponseCode();
+            Log.d("response code", String.valueOf(stats));
+            if(stats == 200) {
+                InputStream response = connection.getInputStream();
+                return Arrays.asList(new Gson().fromJson(readStream(response), CallRequest[].class));
+            }else if(stats == 401){
+                throw new UnauthenticatedException();
+            }else if(stats >=500 ){
+                throw new Exception();
+            }else{
+                throw new InvalidInputException();
+            }
+        }catch(NullPointerException e) {
+            //phone or token is null
+            throw new InvalidInputException();
         }catch(Exception e){
-            e.printStackTrace();
+            throw e;
         }
-        return crlist;
     }
 
     //waitlist
-    public static List<CallRequest> waitlist(String phone, String token, String start, String end){
-        List<CallRequest> crlist = new ArrayList<CallRequest>();
+    public static List<CallRequest> waitlist(String phone, String token, String start, String end) throws Exception{
         try{
+            if(phone == null || token == null) throw new NullPointerException();
+            if(start == null) start = "";
+            if(end == null) end = "";
             URL url = new URL(baseUrl + "waitlist?from="+start+"&end="+end);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestProperty("Accept-Charset", charset);
             connection.setRequestProperty("Accept", "application/json");
             connection.setRequestProperty("phone", phone);
             connection.setRequestProperty("token", token);
-            Log.d("response code", String.valueOf(connection.getResponseCode()));
-            InputStream response = connection.getInputStream();
-            crlist = Arrays.asList(new Gson().fromJson(readStream(response), CallRequest[].class));
+            int stats = connection.getResponseCode();
+            Log.d("response code", String.valueOf(stats));
+            if(stats == 200) {
+                InputStream response = connection.getInputStream();
+                return Arrays.asList(new Gson().fromJson(readStream(response), CallRequest[].class));
+            }else if(stats == 401){
+                throw new UnauthenticatedException();
+            }else if(stats >=500 ){
+                throw new Exception();
+            }else{
+                throw new InvalidInputException();
+            }
+        }catch(NullPointerException e) {
+            //phone or token is null
+            throw new InvalidInputException();
         }catch(Exception e){
-            e.printStackTrace();
+            throw e;
         }
-        return crlist;
     }
 
     //withdraw
-    public static int withdraw(String phone, String token, String id){
+    public static void withdraw(String phone, String token, String id) throws Exception{
         try {
+            if(phone == null || token == null) throw new NullPointerException();
             URL url = new URL(baseUrl + "withdraw");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setDoOutput(true); // trigger POST.
@@ -158,17 +243,29 @@ public class RequestHandler{
             }catch(Exception e){
                 throw e;
             }
-            Log.d("response code", String.valueOf(connection.getResponseCode()));
-            return 0;
-        }catch(Exception e) {
-            Log.d("exception", e.getMessage());
-            return 1;
+            int stats = connection.getResponseCode();
+            Log.d("response code", String.valueOf(stats));
+            if(stats == 204) {
+                return;
+            }else if(stats == 401){
+                throw new UnauthenticatedException();
+            }else if(stats >=500 ){
+                throw new Exception();
+            }else{
+                throw new InvalidInputException();
+            }
+        }catch(NullPointerException e) {
+            //id is null
+            throw new InvalidInputException();
+        }catch(Exception e){
+            throw e;
         }
     }
 
     //finish
-    public static int finish(String phone, String token, String id){
+    public static void finish(String phone, String token, String id) throws Exception{
         try {
+            if(phone == null || token == null) throw new NullPointerException();
             URL url = new URL(baseUrl + "finish");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setDoOutput(true); // trigger POST.
@@ -185,17 +282,29 @@ public class RequestHandler{
             }catch(Exception e){
                 throw e;
             }
-            Log.d("response code", String.valueOf(connection.getResponseCode()));
-            return 0;
-        }catch(Exception e) {
-            Log.d("exception", e.getMessage());
-            return 1;
+            int stats = connection.getResponseCode();
+            Log.d("response code", String.valueOf(stats));
+            if(stats == 204) {
+                return;
+            }else if(stats == 401){
+                throw new UnauthenticatedException();
+            }else if(stats >=500 ){
+                throw new Exception();
+            }else{
+                throw new InvalidInputException();
+            }
+        }catch(NullPointerException e) {
+            //id is null
+            throw new InvalidInputException();
+        }catch(Exception e){
+            throw e;
         }
     }
 
     //refuse
-    public static int refuse(String phone, String token, String id){
+    public static void refuse(String phone, String token, String id) throws Exception{
         try {
+            if(phone == null || token == null) throw new NullPointerException();
             URL url = new URL(baseUrl + "refuse");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setDoOutput(true); // trigger POST.
@@ -212,17 +321,29 @@ public class RequestHandler{
             }catch(Exception e){
                 throw e;
             }
-            Log.d("response code", String.valueOf(connection.getResponseCode()));
-            return 0;
-        }catch(Exception e) {
-            Log.d("exception", e.getMessage());
-            return 1;
+            int stats = connection.getResponseCode();
+            Log.d("response code", String.valueOf(stats));
+            if(stats == 204) {
+                return;
+            }else if(stats == 401){
+                throw new UnauthenticatedException();
+            }else if(stats >=500 ){
+                throw new Exception();
+            }else{
+                throw new InvalidInputException();
+            }
+        }catch(NullPointerException e) {
+            //id is null
+            throw new InvalidInputException();
+        }catch(Exception e){
+            throw e;
         }
     }
 
     //requesterdelete
-    public static int requesterdelete(String phone, String token, String id){
+    public static void requesterdelete(String phone, String token, String id) throws Exception{
         try {
+            if(phone == null || token == null) throw new NullPointerException();
             URL url = new URL(baseUrl + "requesterdelete");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setDoOutput(true); // trigger POST.
@@ -239,17 +360,29 @@ public class RequestHandler{
             }catch(Exception e){
                 throw e;
             }
-            Log.d("response code", String.valueOf(connection.getResponseCode()));
-            return 0;
-        }catch(Exception e) {
-            Log.d("exception", e.getMessage());
-            return 1;
+            int stats = connection.getResponseCode();
+            Log.d("response code", String.valueOf(stats));
+            if(stats == 204) {
+                return;
+            }else if(stats == 401){
+                throw new UnauthenticatedException();
+            }else if(stats >=500 ){
+                throw new Exception();
+            }else{
+                throw new InvalidInputException();
+            }
+        }catch(NullPointerException e) {
+            //id is null
+            throw new InvalidInputException();
+        }catch(Exception e){
+            throw e;
         }
     }
 
     //requesteedelete
-    public static int requesteedelete(String phone, String token, String id){
+    public static void requesteedelete(String phone, String token, String id) throws Exception{
         try {
+            if(phone == null || token == null) throw new NullPointerException();
             URL url = new URL(baseUrl + "requesteedelete");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setDoOutput(true); // trigger POST.
@@ -266,11 +399,22 @@ public class RequestHandler{
             }catch(Exception e){
                 throw e;
             }
-            Log.d("response code", String.valueOf(connection.getResponseCode()));
-            return 0;
-        }catch(Exception e) {
-            Log.d("exception", e.getMessage());
-            return 1;
+            int stats = connection.getResponseCode();
+            Log.d("response code", String.valueOf(stats));
+            if(stats == 204) {
+                return;
+            }else if(stats == 401){
+                throw new UnauthenticatedException();
+            }else if(stats >=500 ){
+                throw new Exception();
+            }else{
+                throw new InvalidInputException();
+            }
+        }catch(NullPointerException e) {
+            //id is null
+            throw new InvalidInputException();
+        }catch(Exception e){
+            throw e;
         }
     }
 

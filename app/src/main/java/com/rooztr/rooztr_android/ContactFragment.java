@@ -24,25 +24,20 @@ import com.rooztr.model.Contact;
 
 public class ContactFragment extends ListFragment implements AdapterView.OnItemClickListener {
 
-    public List<Contact> contacts = new ArrayList<>();
+    //public List<Contact> contacts = new ArrayList<>();
     //HashMap<String,String> names = new HashMap<>();
     //HashMap<String,Set<String>> phoneNumbers = new HashMap<>();
     //HashMap<String,Contact> contactHashMap = new HashMap<>();
-    Intent intent;
-
-    public ContactFragment() {
-
-    }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
         Toast.makeText(getActivity(), "Item: " + position, Toast.LENGTH_SHORT).show();
-        Contact o = contacts.get(position);
+        Contact o = MainActivity.contacts.get(position);
         //Contact o = (Contact) parent.getAdapter().getItem(position);
         //String str = (String) o;
         String contactId = o.getId();
-        intent = new Intent(getActivity(), ContactDetailsActivity.class);
+        Intent intent = new Intent(getActivity(), ContactDetailsActivity.class);
         intent.putExtra("data", contactId);
         startActivity(intent);
 
@@ -64,11 +59,7 @@ public class ContactFragment extends ListFragment implements AdapterView.OnItemC
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Log.d("activity", "created");
-        contacts = new ArrayList<>();
-        for(Map.Entry<String,Contact> entry : MainActivity.contactMap.entrySet()) {
-            contacts.add(entry.getValue());
-        }
-        ArrayAdapter<Contact> adapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_list_item_1,contacts);
+        ArrayAdapter<Contact> adapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_list_item_1, MainActivity.contacts);
         setListAdapter(adapter);
         getListView().setOnItemClickListener(this);
     }
